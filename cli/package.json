@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "dependencies": {
+    "chalk": "^5.1.2",
+    "yargs": "^17.6.0"
+  },
+  "devDependencies": {
+    "@types/yargs": "^17.0.13"
+  }
+}
