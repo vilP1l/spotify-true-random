@@ -7,10 +7,10 @@ export async function middleware(request: NextRequest) {
   const refreshToken = request.cookies.get('spotify_refresh_token')?.value;
   const tokensExpiry = request.cookies.get('spotify_tokens_expiry')?.value;
 
-  if (!accessToken || !refreshToken || !tokensExpiry) return NextResponse.redirect(new URL('/login', request.url));
+  if (!accessToken || !refreshToken || !tokensExpiry) return NextResponse.rewrite(new URL('/login', request.url));
 
   const client = new Player({
-    clientID: 'c9051a95acad4f0791d3c1b8d75658d5',
+    clientID: process.env.SPOTIFY_CLIENT_ID,
     auth: {
       accessToken,
       refreshToken,
@@ -37,7 +37,7 @@ export async function middleware(request: NextRequest) {
     }
   } catch (error) {
     console.error(`failed to refresh tokens:`, error);
-    return NextResponse.redirect(new URL('/login', request.url)); 
+    return NextResponse.rewrite(new URL('/login', request.url)); 
   }
 };
 

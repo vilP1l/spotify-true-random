@@ -29,6 +29,7 @@ declare interface Player {
   on(event: 'auth-refresh', listener: (tokens: AuthTokens) => void): this;
   on(event: 'track-change', listener: (state: SpotifyApi.CurrentPlaybackResponse) => void): this;
   on(event: 'track-queued', listener: (track: SpotifyApi.TrackObjectSimplified) => void): this;
+  on(event: 'state-change', listener: (state: SpotifyApi.CurrentPlaybackResponse) => void): this;
   on(event: 'error', listener: (error: Error) => void): this;
 }
 
@@ -38,6 +39,9 @@ class Player extends EventEmitter {
   private authRefreshHandler?: (tokens: AuthTokens) => void;
 
   playbackState?: SpotifyApi.CurrentPlaybackResponse;
+  queue?: SpotifyApi.UsersQueueResponse;
+  enabled = true;
+
   private contextSongsList?: SongsListResponse|null;
   private lastSongsListFetch?: Date;
   private listContextID?: string;
@@ -129,21 +133,43 @@ class Player extends EventEmitter {
     return false;
   }
 
+  private handleTrackChange(json: SpotifyApi.CurrentPlaybackResponse) {
+    this.playbackState = json;
+    this.getQueue();
+    this.emit('track-change', json);
+  }
+
   async getPlaybackState() {
     const json = await this.doRequest('/me/player') as SpotifyApi.CurrentPlaybackResponse;
+
+    const playPauseChanged = this.playbackState?.is_playing !== json.is_playing;
+    const shuffleChanged = this.playbackState?.shuffle_state !== json.shuffle_state;
+
+    if (this.playbackState && (!json || !Object.keys(json).length)) this.emit('state-change', json);
+    if (playPauseChanged || shuffleChanged) this.emit('state-change', json);
+
+    /*
+      only attempt to queue a random song when there has been a previous one, this prevents
+      songs from being queued on reloads, etc, and still works mostly the same because 
+      shuffle is enabled
+    */
     if (this.playbackState?.item?.id !== json.item?.id) {
-      this.playbackState = json;
-      this.emit('track-change', json);
-      if (this.playbackState.shuffle_state) this.queueRandomSong().catch((e) => this.emit('error', e));
+      if (this.enabled && this.playbackState && json.shuffle_state) {
+        this.playbackState = json;
+        this.queueRandomSong()
+          .then(() => this.handleTrackChange(json))
+          .catch((e) => this.emit('error', e));
+      } else this.handleTrackChange(json);
     }
     return json;
   }
 
-  startPlaybackStatePoll() {
-    setInterval(() => {
-      this.getPlaybackState()
+  async startPlaybackStatePoll() {
+    while (true) {
+      await this.getPlaybackState()
         .catch((e) => this.emit('error', e));
-    }, 3000);
+      await delay(2000);
+    }
   }
 
   async getContextSongsList(uri: string): Promise<SongsListResponse | null> {
@@ -201,7 +227,10 @@ class Player extends EventEmitter {
   }
 
   async getQueue(): Promise<SpotifyApi.UsersQueueResponse> {
-    return this.doRequest('/me/player/queue');
+    const queue = await this.doRequest('/me/player/queue');
+    this.queue = queue;
+    this.emit('state-change', this.playbackState);
+    return queue;
   }
 
   async queueRandomSong() {
@@ -217,6 +246,11 @@ class Player extends EventEmitter {
     } catch (error) {
       throw new Error(`failed to queue random track: ${error}`);
     }
+  }
+  
+  toggleEnableState() {
+    this.enabled = !this.enabled;
+    this.emit('state-change', this.playbackState);
   }
 }
 

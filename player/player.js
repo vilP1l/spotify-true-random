@@ -6,6 +6,8 @@ class Player extends EventEmitter {
     clientID;
     authRefreshHandler;
     playbackState;
+    queue;
+    enabled = true;
     contextSongsList;
     lastSongsListFetch;
     listContextID;
@@ -86,21 +88,42 @@ class Player extends EventEmitter {
         }
         return false;
     }
+    handleTrackChange(json) {
+        this.playbackState = json;
+        this.getQueue();
+        this.emit('track-change', json);
+    }
     async getPlaybackState() {
         const json = await this.doRequest('/me/player');
+        const playPauseChanged = this.playbackState?.is_playing !== json.is_playing;
+        const shuffleChanged = this.playbackState?.shuffle_state !== json.shuffle_state;
+        if (this.playbackState && (!json || !Object.keys(json).length))
+            this.emit('state-change', json);
+        if (playPauseChanged || shuffleChanged)
+            this.emit('state-change', json);
+        /*
+          only attempt to queue a random song when there has been a previous one, this prevents
+          songs from being queued on reloads, etc, and still works mostly the same because
+          shuffle is enabled
+        */
         if (this.playbackState?.item?.id !== json.item?.id) {
-            this.playbackState = json;
-            this.emit('track-change', json);
-            if (this.playbackState.shuffle_state)
-                this.queueRandomSong().catch((e) => this.emit('error', e));
+            if (this.enabled && this.playbackState && json.shuffle_state) {
+                this.playbackState = json;
+                this.queueRandomSong()
+                    .then(() => this.handleTrackChange(json))
+                    .catch((e) => this.emit('error', e));
+            }
+            else
+                this.handleTrackChange(json);
         }
         return json;
     }
-    startPlaybackStatePoll() {
-        setInterval(() => {
-            this.getPlaybackState()
+    async startPlaybackStatePoll() {
+        while (true) {
+            await this.getPlaybackState()
                 .catch((e) => this.emit('error', e));
-        }, 3000);
+            await delay(2000);
+        }
     }
     async getContextSongsList(uri) {
         let data = null;
@@ -154,7 +177,10 @@ class Player extends EventEmitter {
         });
     }
     async getQueue() {
-        return this.doRequest('/me/player/queue');
+        const queue = await this.doRequest('/me/player/queue');
+        this.queue = queue;
+        this.emit('state-change', this.playbackState);
+        return queue;
     }
     async queueRandomSong() {
         try {
@@ -173,6 +199,10 @@ class Player extends EventEmitter {
         catch (error) {
             throw new Error(`failed to queue random track: ${error}`);
         }
+    }
+    toggleEnableState() {
+        this.enabled = !this.enabled;
+        this.emit('state-change', this.playbackState);
     }
 }
 export default Player;
