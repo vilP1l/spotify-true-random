@@ -5,6 +5,9 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  experimental: {
+    runtime: 'nodejs',
+  },
   images: {
     domains: ["i.scdn.co"],
   }
