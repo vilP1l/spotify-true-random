@@ -44,6 +44,7 @@ const player = new Player({
 });
 
 await player.refreshTokens();
+player.startPlaybackStatePoll();
 
 const showCurrentState = async (state: SpotifyApi.CurrentPlaybackResponse) => {
   if (state.item && state.is_playing && state.item.type === 'track') {

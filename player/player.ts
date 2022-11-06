@@ -1,4 +1,3 @@
-import fetch from 'cross-fetch';
 import EventEmitter from 'events';
 
 import { AuthTokens } from './auth.js';
@@ -38,7 +37,7 @@ class Player extends EventEmitter {
   private clientID: string;
   private authRefreshHandler?: (tokens: AuthTokens) => void;
 
-  private playbackState?: SpotifyApi.CurrentPlaybackResponse;
+  playbackState?: SpotifyApi.CurrentPlaybackResponse;
   private contextSongsList?: SongsListResponse|null;
   private lastSongsListFetch?: Date;
   private listContextID?: string;
@@ -48,8 +47,6 @@ class Player extends EventEmitter {
     this.auth = init.auth;
     this.clientID = init.clientID;
     this.authRefreshHandler = authRefreshHandler;
-
-    this.startPlaybackStatePoll();
   }
 
   private async doRequest(path: string, options?: DoRequestOptions): Promise<any> {
@@ -142,7 +139,7 @@ class Player extends EventEmitter {
     return json;
   }
 
-  private startPlaybackStatePoll() {
+  startPlaybackStatePoll() {
     setInterval(() => {
       this.getPlaybackState()
         .catch((e) => this.emit('error', e));
