@@ -18,7 +18,7 @@ export default function SpotifyProvider({ children }: PropsWithChildren) {
     const refreshToken = getCookie('spotify_refresh_token') as string || '';
     const tokenExpiry = getCookie('spotify_tokens_expiry') as string || '';
 
-    return new Player({
+    const player = new Player({
       clientID: 'c9051a95acad4f0791d3c1b8d75658d5',
       auth: {
         accessToken,
@@ -30,17 +30,17 @@ export default function SpotifyProvider({ children }: PropsWithChildren) {
       setCookie('spotify_refresh_token', tokens.refreshToken);
       setCookie('spotify_tokens_expiry', `${tokens.tokenExpiry.valueOf()}`);
     });
-  }, []);
 
-  useEffect(() => {
-    client.startPlaybackStatePoll();
-
-    client.getPlaybackState()
+    player.startPlaybackStatePoll();
+  
+    player.getPlaybackState()
       .then(setPlaybackState);
 
-    client.on('track-change', (state) => {
+    player.on('track-change', (state) => {
       setPlaybackState(state);
     });
+
+    return player;
   }, []);
 
   return (
