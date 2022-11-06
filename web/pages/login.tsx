@@ -3,22 +3,28 @@ import styled from 'styled-components';
 import { FaSpotify } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
+import Head from 'next/head';
 
 export default function Login() {
   return (
-    <Container>
-      <Header />
-      <Content>
-        <h2>Authorization Required</h2>
-        <p>Login with your Spotify account to continue.</p>
-        <div style={{display: 'flex'}}>
-          <SpotifyLoginButton href="/api/authurl">
-            <FaSpotify size={20} />
-            Login With Spotify
-          </SpotifyLoginButton>
-        </div>
-      </Content>
-    </Container>  
+    <>
+      <Head>
+        <title>Spotify True Random | Login</title>
+      </Head>
+      <Container>
+        <Header />
+        <Content>
+          <h2>Authorization Required</h2>
+          <p>Login with your Spotify account to continue.</p>
+          <div style={{display: 'flex'}}>
+            <SpotifyLoginButton href="/api/authurl">
+              <FaSpotify size={20} />
+              Login With Spotify
+            </SpotifyLoginButton>
+          </div>
+        </Content>
+      </Container>  
+    </>
   )
 }
 
