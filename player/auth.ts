@@ -1,5 +1,4 @@
 import crypto from 'crypto';
-import fetch from 'cross-fetch';
 
 type AppDetails = {
   clientID: string;
