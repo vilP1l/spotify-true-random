@@ -116,6 +116,8 @@ class Player extends EventEmitter {
             else
                 this.handleTrackChange(json);
         }
+        else
+            this.playbackState = json;
         return json;
     }
     async startPlaybackStatePoll() {

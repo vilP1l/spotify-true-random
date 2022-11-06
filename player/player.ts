@@ -160,7 +160,8 @@ class Player extends EventEmitter {
           .then(() => this.handleTrackChange(json))
           .catch((e) => this.emit('error', e));
       } else this.handleTrackChange(json);
-    }
+    } else this.playbackState = json;
+
     return json;
   }
 
