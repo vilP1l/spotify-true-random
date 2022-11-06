@@ -2,12 +2,14 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { FaSpotify } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import Header from '../components/Header';
 
 export default function Login() {
   return (
     <Container>
+      <Header />
       <Content>
-        <h1>Authorization Required</h1>
+        <h2>Authorization Required</h2>
         <p>Login with your Spotify account to continue.</p>
         <div style={{display: 'flex'}}>
           <SpotifyLoginButton href="/api/authurl">
@@ -31,9 +33,13 @@ const Container = styled.main`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  width: 30%;
+  width: 400px;
+  margin: 1em;
+  background: #191919;
+  padding: 1em;
+  border-radius: 10px;
 
-  h1, p {
+  h1, h2, p {
     margin: 0;
   }
 
@@ -44,8 +50,8 @@ const Content = styled.div`
 
 const SpotifyLoginButton = styled(motion(Link)).attrs({
   whileHover: {
-    scale: 1.05,
-  }
+    scale: 1.025,
+  },
 })`
   font-weight: 500;
   display: flex;
@@ -53,6 +59,9 @@ const SpotifyLoginButton = styled(motion(Link)).attrs({
   gap: 5px;
   background: #1DB954;
   padding: 1em;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
   border-radius: 25px;
   margin-top: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.26);
 `;
