@@ -1,5 +1,4 @@
 import crypto from 'crypto';
-import fetch from 'cross-fetch';
 export default class AuthManager {
     appDetails;
     verifiers = {};
