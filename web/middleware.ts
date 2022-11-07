@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import 'events';
 
-import Player from '../player/player';
+import Player from 'spotify-player/player';
 
 export async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get('spotify_access_token')?.value;
