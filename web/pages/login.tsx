@@ -4,6 +4,7 @@ import { FaSpotify } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import Head from 'next/head';
+import ExternalLink from '../components/ExternalLink';
 
 export default function Login() {
   return (
@@ -15,7 +16,8 @@ export default function Login() {
         <Header />
         <Content>
           <h2>Authorization Required</h2>
-          <p>Login with your Spotify account to continue.</p>
+          <h3>Login with your Spotify account to continue.</h3>
+          <p>TrueRandom needs to be able to control and read the playback state using <ExternalLink href="https://support.spotify.com/us/article/spotify-connect/">Spotify Connect</ExternalLink> to function. All authentication is done locally, and nothing is stored on a server. You can view the source code <ExternalLink href="https://github.com/vilP1l/spotify-true-random/tree/web">here</ExternalLink>.</p>
           <div style={{display: 'flex'}}>
             <SpotifyLoginButton href="/api/authurl">
               <FaSpotify size={20} />
@@ -39,18 +41,28 @@ const Container = styled.main`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: 600px;
   margin: 1em;
   background: #191919;
   padding: 1em;
   border-radius: 10px;
 
-  h1, h2, p {
+  h1, h2, h3, p {
     margin: 0;
   }
 
   h1 {
     margin-bottom: 2px;
+  }
+
+  h3 {
+    margin-bottom: 10px;
+    font-weight: 500;
+    opacity: 0.9;
+  }
+
+  p {
+    opacity: 0.8;
   }
 `;
 
