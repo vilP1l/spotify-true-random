@@ -93,7 +93,7 @@ class Player extends EventEmitter {
     }
   }
 
-  async refreshTokens(): Promise<boolean> {
+  async refreshTokens(): Promise<AuthTokens|null> {
     if (+new Date() >= +new Date(this.auth.tokenExpiry)) {
       const body = new URLSearchParams({
         grant_type: 'refresh_token',
@@ -124,13 +124,13 @@ class Player extends EventEmitter {
 
         this.emit('auth-refresh', this.auth);
         if (this.authRefreshHandler) this.authRefreshHandler(this.auth);
-        return true;
+        return this.auth;
       } catch (error) {
         throw new Error(`failed to refresh token: ${error}`);
       }
     }
 
-    return false;
+    return null;
   }
 
   private handleTrackChange(json: SpotifyApi.CurrentPlaybackResponse) {

@@ -16,24 +16,26 @@ export async function middleware(request: NextRequest) {
       refreshToken,
       tokenExpiry: new Date(Number.parseInt(tokensExpiry)),
     }
-  }, (tokens) => {
-    const res = NextResponse.next();
-
-    res.cookies.set('spotify_access_token', tokens.accessToken);
-    res.cookies.set('spotify_refresh_token', tokens.refreshToken);
-    res.cookies.set('spotify_tokens_expiry', `${tokens.tokenExpiry.valueOf()}`);
-
-    return res;
   });
 
   try {
-    const didRefresh = await client.refreshTokens();
-    if (!didRefresh) {
+    const tokens = await client.refreshTokens();
+  
+    if (!tokens) { // didnt refresh
       // do another api call to check auth since auth refresh api call is not done
       // TODO: distinguish 502 from 403
       await client.getPlaybackState();
 
       return NextResponse.next();
+    } else { // refresh success
+      const res = NextResponse.next();
+      console.log('refreshed tokens successfully on middleware');
+      
+      res.cookies.set('spotify_access_token', tokens.accessToken);
+      res.cookies.set('spotify_refresh_token', tokens.refreshToken);
+      res.cookies.set('spotify_tokens_expiry', `${tokens.tokenExpiry.valueOf()}`);
+
+      return res;
     }
   } catch (error) {
     console.error(`failed to refresh tokens:`, error);

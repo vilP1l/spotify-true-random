@@ -69,7 +69,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'cross-events';
 import { delay, getSpotifyUriID } from './utils.js';
 var baseURL = 'https://api.spotify.com/v1';
 var Player = /** @class */ (function (_super) {
@@ -171,11 +171,11 @@ var Player = /** @class */ (function (_super) {
                         this.emit('auth-refresh', this.auth);
                         if (this.authRefreshHandler)
                             this.authRefreshHandler(this.auth);
-                        return [2 /*return*/, true];
+                        return [2 /*return*/, this.auth];
                     case 6:
                         error_2 = _c.sent();
                         throw new Error("failed to refresh token: ".concat(error_2));
-                    case 7: return [2 /*return*/, false];
+                    case 7: return [2 /*return*/, null];
                 }
             });
         });

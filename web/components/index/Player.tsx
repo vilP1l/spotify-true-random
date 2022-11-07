@@ -104,7 +104,7 @@ const Content = styled.div`
   }
 
   .shuffle-disable-state {
-    color: #ff2626;
+    color: #ff2626c4;
   }
 
   .playback-state {
