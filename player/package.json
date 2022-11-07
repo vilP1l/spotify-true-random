@@ -2,10 +2,12 @@
   "type": "module",
   "dependencies": {
     "@types/spotify-api": "^0.0.19",
+    "cross-events": "npm:events@^3.3.0",
     "events": "^3.3.0",
     "node-fetch": "^3.2.10"
   },
   "devDependencies": {
+    "@types/cross-events": "npm:@types/events@^3.0.0",
     "@types/events": "^3.0.0",
     "@types/node": "^18.11.4"
   }
