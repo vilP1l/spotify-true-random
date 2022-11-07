@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
   if (!accessToken || !refreshToken || !tokensExpiry) return NextResponse.rewrite(new URL('/login', request.url));
 
   const client = new Player({
-    clientID: process.env.SPOTIFY_CLIENT_ID,
+    clientID: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
     auth: {
       accessToken,
       refreshToken,

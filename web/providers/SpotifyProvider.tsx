@@ -21,7 +21,7 @@ export default function SpotifyProvider({ children }: PropsWithChildren) {
     const tokenExpiry = getCookie('spotify_tokens_expiry') as string || '';
 
     const player = new Player({
-      clientID: process.env.SPOTIFY_CLIENT_ID,
+      clientID: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
       auth: {
         accessToken,
         refreshToken,
