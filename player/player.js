@@ -69,7 +69,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import { EventEmitter } from 'cross-events';
+import { EventEmitter } from 'events';
 import { delay, getSpotifyUriID } from './utils.js';
 var baseURL = 'https://api.spotify.com/v1';
 var Player = /** @class */ (function (_super) {

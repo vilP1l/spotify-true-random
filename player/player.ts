@@ -1,4 +1,4 @@
-import { EventEmitter } from 'cross-events';
+import { EventEmitter } from 'events';
 
 import { AuthTokens } from './auth.js';
 import { delay, getSpotifyUriID } from './utils.js';
