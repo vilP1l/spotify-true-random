@@ -7,6 +7,7 @@ const nextConfig = {
   },
   experimental: {
     runtime: 'nodejs',
+    externalDir: true
   },
   images: {
     domains: ["i.scdn.co"],
