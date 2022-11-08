@@ -154,7 +154,7 @@ class Player extends EventEmitter {
       shuffle is enabled
     */
     if (this.playbackState?.item?.id !== json.item?.id) {
-      if (this.enabled && this.playbackState && json.shuffle_state) {
+      if (this.enabled && this.playbackState?.item && json.shuffle_state) {
         this.playbackState = json;
         this.queueRandomSong()
           .then(() => this.handleTrackChange(json))

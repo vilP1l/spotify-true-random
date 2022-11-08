@@ -186,15 +186,15 @@ var Player = /** @class */ (function (_super) {
         this.emit('track-change', json);
     };
     Player.prototype.getPlaybackState = function () {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d, _e, _f;
         return __awaiter(this, void 0, void 0, function () {
             var json, playPauseChanged, shuffleChanged;
             var _this = this;
-            return __generator(this, function (_f) {
-                switch (_f.label) {
+            return __generator(this, function (_g) {
+                switch (_g.label) {
                     case 0: return [4 /*yield*/, this.doRequest('/me/player')];
                     case 1:
-                        json = _f.sent();
+                        json = _g.sent();
                         playPauseChanged = ((_a = this.playbackState) === null || _a === void 0 ? void 0 : _a.is_playing) !== json.is_playing;
                         shuffleChanged = ((_b = this.playbackState) === null || _b === void 0 ? void 0 : _b.shuffle_state) !== json.shuffle_state;
                         if (this.playbackState && (!json || !Object.keys(json).length))
@@ -207,7 +207,7 @@ var Player = /** @class */ (function (_super) {
                           shuffle is enabled
                         */
                         if (((_d = (_c = this.playbackState) === null || _c === void 0 ? void 0 : _c.item) === null || _d === void 0 ? void 0 : _d.id) !== ((_e = json.item) === null || _e === void 0 ? void 0 : _e.id)) {
-                            if (this.enabled && this.playbackState && json.shuffle_state) {
+                            if (this.enabled && ((_f = this.playbackState) === null || _f === void 0 ? void 0 : _f.item) && json.shuffle_state) {
                                 this.playbackState = json;
                                 this.queueRandomSong()
                                     .then(function () { return _this.handleTrackChange(json); })
