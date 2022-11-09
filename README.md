@@ -1,4 +1,4 @@
-# Spotify True Random
+# Spotify True Random Shuffle
 
 A true random spotify shuffle mode
 
@@ -16,7 +16,7 @@ It will host a temporary http server at localhost:9999 prompt you to authenticat
 
 ### Web [WIP]
 
-https://spotify-true-random.vercel.app/
+https://trueshuffle.cc
 
 ## Limitations
 
