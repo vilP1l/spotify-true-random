@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { FaSpotify } from "react-icons/fa";
 
-const Container = styled.div`
+const Container = styled.header`
   display: flex;
   align-items: center;
   gap: 2px;
@@ -17,8 +16,7 @@ const Container = styled.div`
 export default function Header() {
   return (
     <Container>
-      <FaSpotify />
-      <span>TrueRandom</span>
+      <span>TrueShuffle</span>
     </Container>
   )
 }

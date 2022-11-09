@@ -6,7 +6,6 @@ import { setCookie } from "cookies-next";
 import { SpotifyContext } from "../../providers/SpotifyProvider"
 import { PillButton } from "../Buttons";
 import { FaSpotify } from "react-icons/fa";
-import { BiLogOut } from "react-icons/bi";
 import Header from "../Header";
 
 export default function Player() {
@@ -25,7 +24,7 @@ export default function Player() {
       <Content>
         {
           spotify.playbackState?.shuffle_state && (
-            <span className={`shuffle-${spotify.client?.enabled ? 'enable' : 'disable'}-state`}>TRUE RANDOM {spotify.client?.enabled ? 'ENABLED' : 'DISABLED'}</span>
+            <span className={`shuffle-${spotify.client?.enabled ? 'enable' : 'disable'}-state`}>TRUE SHUFFLE {spotify.client?.enabled ? 'ENABLED' : 'DISABLED'}</span>
           )
         }
         {
@@ -88,7 +87,6 @@ const Content = styled.div`
   padding: 1em;
   margin: 1em;
   background: #191919;
-  border-radius: 5px;
 
   h1, h2, h3, h4, h5 {
     margin: 0;
@@ -124,10 +122,6 @@ const NowPlaying = styled.div`
     position: relative;
     height: 50px;
     aspect-ratio: 1;
-
-    img {
-      border-radius: 5px;
-    }
   }
 
   .text-container {

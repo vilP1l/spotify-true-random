@@ -7,7 +7,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Spotify True Random</title>
+        <title>TrueShuffle</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
       </Head>
       <Component {...pageProps} />
