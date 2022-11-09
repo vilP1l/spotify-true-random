@@ -17,7 +17,7 @@ export default function Login() {
         <Content>
           <h2>Authorization Required</h2>
           <h3>Login with your Spotify account to continue.</h3>
-          <p>TrueRandom needs to be able to control and read the playback state using <ExternalLink href="https://support.spotify.com/us/article/spotify-connect/">Spotify Connect</ExternalLink> to function. All authentication is done locally, and nothing is stored on a server. You can view the source code <ExternalLink href="https://github.com/vilP1l/spotify-true-random/tree/web">here</ExternalLink>.</p>
+          <p>TrueRandom needs to be able to control and read the playback state using <ExternalLink href="https://support.spotify.com/us/article/spotify-connect/">Spotify Connect</ExternalLink> to function. Nothing is stored on a server, you can view the source code <ExternalLink href="https://github.com/vilP1l/spotify-true-random/tree/web">here</ExternalLink>.</p>
           <div style={{display: 'flex'}}>
             <SpotifyLoginButton href="/api/authurl">
               <FaSpotify size={20} />
