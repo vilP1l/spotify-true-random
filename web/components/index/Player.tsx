@@ -87,6 +87,7 @@ const Content = styled.div`
   padding: 1em;
   margin: 1em;
   background: #191919;
+  border-radius: 2px;
 
   h1, h2, h3, h4, h5 {
     margin: 0;
